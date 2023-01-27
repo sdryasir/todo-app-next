@@ -8,6 +8,18 @@ export async function getAllTodos(){
         return error
     }
 }
+export async function getTodoById(id){
+    try {
+        const todo = await prisma.todo.findUnique({
+            where: {
+              id: id,
+            },
+          }) 
+        return {todo}
+    } catch (error) {
+        return error
+    }
+}
 
 export async function createTodo (todo){
     try {

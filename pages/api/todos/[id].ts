@@ -1,16 +1,18 @@
-import {deleteTodo} from '../../../config/prisma/todos'
+import {deleteTodo, getTodoById} from '../../../config/prisma/todos'
 
 export default async ( req: NextApiRequest, res: NextApiResponse ) => {
     const id = req.query.id!;
-    // if (req.method === 'GET') {
-    //     const data = await getCustomer(id as string);
+    if (req.method === 'GET') {
+        const data = await getTodoById(id as string);
+        console.log(data);
+        
+        if (!data) {
+            res.status(404).json({ error: 'Todo not found' });
+        }
 
-    //     if (!data) {
-    //         res.status(404).json({ error: 'Customer not found' });
-    //     }
-
-    //     res.status(200).json({ customer: data });
-    // } else if (req.method === 'PUT') {
+        res.status(200).json({ todo: data });
+    } 
+    //else if (req.method === 'PUT') {
     //     const customer: Customer = {
     //         name: req.body.name,
     //         industry: req.body.industry,

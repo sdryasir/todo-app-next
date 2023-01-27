@@ -1,19 +1,32 @@
 "use client"
-import {Container, Box, Heading, List} from '@chakra-ui/react';
+import {Container, Box, Heading, List, Button} from '@chakra-ui/react';
+import {useState} from 'react'
 import TodoForm from './TodoForm'
 import TodoItem from './TodoItem'
-function Todo({todos}) {
+import { FiPlusSquare } from "react-icons/fi";
 
+export interface Todo{
+  id:string,
+  title:string,
+  description:string,
+  status:boolean
+}
 
+function Todo({todos}:{todos:Todo[]}) {
+
+  let todosArray:Todo[] = todos.todos;
+
+  const [showForm, setShowForm] = useState(false)
   return (
     <Box>
       <Container as='div' maxW='1280px'>
-        <TodoForm/>
+        {!showForm ? <Button colorScheme='teal' onClick={()=>setShowForm(true)} mt={6}>Add Todo</Button> : null}
+        {showForm ? <TodoForm/> : null}
         {
-            todos && todos.todos.length === 0 ? <h1>No todo Found...</h1>:
+            todosArray && todosArray.length === 0 ? <h1>No todo Found...</h1>:
             <List spacing={2} my='12px'>
             {
-                todos && todos.todos.map((todo, idx)=><TodoItem key={idx} todo={todo}/>)
+                todosArray && todosArray.map((todo:Todo, idx)=><TodoItem key={idx} todo={todo}/>)
             }    
         </List>
         }

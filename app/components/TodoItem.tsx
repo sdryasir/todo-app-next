@@ -6,8 +6,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 import BeatLoader from "react-spinners/BeatLoader";
+import Link from 'next/link';
+import Todo from './Todo'
 
-function TodoItem({todo}) {
+function TodoItem({todo}:Todo) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const refreshData = () => {
@@ -30,12 +32,19 @@ function TodoItem({todo}) {
       }
       refreshData();
     }
+
+    const handleEdit = async (id)=>{
+      const resonse = await fetch(`http://localhost:3000/api/todos/${id}`)
+      return resonse.json();
+    }
+
+    
   return (
     <ListItem bg="todo.700" p='12px' borderRadius='8px' color='#fff'>
         <Flex align='center'>
             <Text textDecoration={isComplete ? '':'line-through'}>{todo.title}</Text>
             <Spacer/>
-            <ListIcon color='#fff' as={FiEdit} />
+            <Link href={`/edit/${todo.id}`}><ListIcon color='#fff' as={FiEdit} /></Link> 
             {isLoading ? <BeatLoader size={8} color="#36d7b7" /> : <ListIcon color='#fff' onClick={()=>handleDelete(todo.id)} as={FiTrash2} />}
             <ListIcon color='#fff' onClick={handleComplete} as={isComplete ? FiEye : FiEyeOff} />
         </Flex>
