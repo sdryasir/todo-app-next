@@ -7,7 +7,7 @@ import Todo from './components/Todo'
 const inter = Inter({ subsets: ['latin'] })
 
 async function getData() {
-  const res = await fetch('http://localhost:3000/api/todos');
+  const res = await fetch(process.env.BASE_URL+"/todos");
   if (!res.ok) {
     throw new Error('Failed to fetch data');
   }

@@ -12,9 +12,11 @@ export interface Todo{
   status:boolean
 }
 
-function Todo({todos}:{todos:Todo[]}) {
+function Todo({todos}:any) {
 
-  let todosArray:Todo[] = todos.todos;
+  //console.log(todos);
+  
+  let todosArray = todos.todos;
 
   const [showForm, setShowForm] = useState(false)
   return (
@@ -26,7 +28,7 @@ function Todo({todos}:{todos:Todo[]}) {
             todosArray && todosArray.length === 0 ? <h1>No todo Found...</h1>:
             <List spacing={2} my='12px'>
             {
-                todosArray && todosArray.map((todo:Todo, idx)=><TodoItem key={idx} todo={todo}/>)
+                todosArray && todosArray.map((todo:Todo, idx:number)=><TodoItem key={idx} todo={todo}/>)
             }    
         </List>
         }

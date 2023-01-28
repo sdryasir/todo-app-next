@@ -11,15 +11,15 @@ type Todo = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Todo[]>
+  res: NextApiResponse<any>
 ) {
   if(req.method === 'POST'){
     try {
       const data = req.body;      
       const todo = await createTodo(data)
       return res.status(200).json(todo)
-    } catch (error) {
-      return res.status(500).json({error: error})
+    } catch (error:any) {
+      return res.status(500).json({"error": error.message})
     }
     
   }
@@ -27,8 +27,8 @@ export default async function handler(
     try {
       const todos = await getAllTodos()
       return res.status(200).json(todos)
-    } catch (error) {
-      return res.status(500).json({error: error})
+    } catch (error:any) {
+      return res.status(500).json({"error": error.message})
     }
   }
   res.setHeader('Allow', ['GET', 'POST'])

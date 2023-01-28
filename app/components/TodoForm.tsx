@@ -12,7 +12,7 @@ export default function TodoForm() {
     const refreshData = () => {
         router.replace('/');
       }
-    const notify = (msg) => toast(msg);
+    const notify = (msg:string) => toast(msg);
     const TodoSchema = Yup.object().shape({
         title: Yup.string()
           .min(3, 'title is too Short! (atleast 3 characters required)')
@@ -37,7 +37,7 @@ export default function TodoForm() {
             validationSchema={TodoSchema}
             onSubmit={async (values, actions) => {
                 try {
-                    const res = await fetch('http://localhost:3000/api/todos', {
+                    const res = await fetch(process.env.BASE_URL+'/todos', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -47,8 +47,9 @@ export default function TodoForm() {
                   notify("Todo has been created!")
                   refreshData();
                   actions.resetForm()  
-                } catch (error) {
-                    notify(error.message)
+                } catch (error:any) {
+                    let e:string = error.message
+                    notify(e)
                 }      
                 actions.setSubmitting(false)
             }}
@@ -57,7 +58,7 @@ export default function TodoForm() {
                 (props)=>(
                     <Form>
                         <Field name='title'>
-                            {({ field, form }) => (
+                            {({ field, form }:any) => (
                             <FormControl my={6} isInvalid={form.errors.title && form.touched.title}>
                                 <Input {...field} placeholder='Enter Title' />
                                 <FormErrorMessage>{form.errors.title}</FormErrorMessage>
@@ -65,7 +66,7 @@ export default function TodoForm() {
                             )}
                         </Field>
                         <Field name='description'>
-                            {({ field, form }) => (
+                            {({ field, form }:any) => (
                             <FormControl my={6} isInvalid={form.errors.description && form.touched.description}>
                                 <Input {...field} placeholder='Enter description' />
                                 <FormErrorMessage>{form.errors.description}</FormErrorMessage>

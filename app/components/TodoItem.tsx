@@ -7,34 +7,33 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 import BeatLoader from "react-spinners/BeatLoader";
 import Link from 'next/link';
-import Todo from './Todo'
 
-function TodoItem({todo}:Todo) {
+function TodoItem({todo}:any) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const refreshData = () => {
         router.replace('/');
       }
-    const notify = (msg) => toast(msg);
+    const notify = (msg:string) => toast(msg);
     const [isComplete, setIsComplete] = useState(false)
     const handleComplete = ()=>{
         setIsComplete(!isComplete)
     }
-    const handleDelete = async (id)=>{
+    const handleDelete = async (id:string)=>{
       try {
         setIsLoading(true);
-        const res = await fetch(`http://localhost:3000/api/todos/${id}`, {method: 'DELETE'})
+        const res = await fetch(process.env.BASE_URL+`/todos/${id}`, {method: 'DELETE'})
         setIsLoading(false)
         notify('Todo has been deleted');
-      } catch (error) {
+      } catch (error:any) {
         setIsLoading(false)
         notify(error.message)
       }
       refreshData();
     }
 
-    const handleEdit = async (id)=>{
-      const resonse = await fetch(`http://localhost:3000/api/todos/${id}`)
+    const handleEdit = async (id:string)=>{
+      const resonse = await fetch(process.env.BASE_URL+`/todos/${id}`)
       return resonse.json();
     }
 

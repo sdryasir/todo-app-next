@@ -1,4 +1,5 @@
 import {deleteTodo, getTodoById} from '../../../config/prisma/todos'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async ( req: NextApiRequest, res: NextApiResponse ) => {
     const id = req.query.id!;
