@@ -1,6 +1,6 @@
 "use client"
 import {Container, Box, Heading, List, Button} from '@chakra-ui/react';
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import TodoForm from './TodoForm'
 import TodoItem from './TodoItem'
 import { FiPlusSquare } from "react-icons/fi";
@@ -12,12 +12,17 @@ export interface Todo{
   status:boolean
 }
 
-function Todo({todos}:any) {
+function Todo() {
 
-  //console.log(todos);
+
+  const [todos, setTodos] = useState([])
+  async function getData() {
+    await fetch(process.env.BASE_URL+"/api/todos").then(res=>res.json()).then(data=>setTodos(data.todos))
+  }
+  useEffect(()=>{
+    getData();    
+  },[])
   
-  let todosArray = todos.todos;
-
   const [showForm, setShowForm] = useState(false)
   return (
     <Box>
@@ -25,10 +30,10 @@ function Todo({todos}:any) {
         {!showForm ? <Button colorScheme='teal' onClick={()=>setShowForm(true)} mt={6}>Add Todo</Button> : null}
         {showForm ? <TodoForm/> : null}
         {
-            todosArray && todosArray.length === 0 ? <h1>No todo Found...</h1>:
+            todos && todos.length === 0 ? <h1>No todo Found...</h1>:
             <List spacing={2} my='12px'>
             {
-                todosArray && todosArray.map((todo:Todo, idx:number)=><TodoItem key={idx} todo={todo}/>)
+                todos && todos.map((todo:Todo, idx:number)=><TodoItem key={idx} todo={todo}/>)
             }    
         </List>
         }
