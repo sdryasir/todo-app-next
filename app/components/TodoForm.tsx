@@ -37,7 +37,7 @@ export default function TodoForm() {
             validationSchema={TodoSchema}
             onSubmit={async (values, actions) => {
                 try {
-                    const res = await fetch('http://localhost:3000/api/todos/todos', {
+                    const res = await fetch(process.env.BASE_URL+"/api/todos", {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
