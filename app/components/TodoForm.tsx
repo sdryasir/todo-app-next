@@ -6,12 +6,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import BeatLoader from "react-spinners/BeatLoader";
+import {useState} from 'react';
 
-export default function TodoForm() {
+export default function TodoForm(todo:any) {
     const router = useRouter();
     const refreshData = () => {
         router.replace('/');
       }
+      const [isLoading, setIsLoading] = useState(false);
     const notify = (msg:string) => toast(msg);
     const TodoSchema = Yup.object().shape({
         title: Yup.string()
@@ -37,6 +40,7 @@ export default function TodoForm() {
             validationSchema={TodoSchema}
             onSubmit={async (values, actions) => {
                 try {
+                    setIsLoading(true);
                     const res = await fetch("/api/todos", {
                     method: 'POST',
                     headers: {
@@ -44,10 +48,13 @@ export default function TodoForm() {
                     },
                     body: JSON.stringify(values),
                   })
+                  setIsLoading(false)
                   notify("Todo has been created!")
+                  todo.getAllTodos();
                   refreshData();
                   actions.resetForm()  
                 } catch (error:any) {
+                    setIsLoading(false)
                     let e:string = error.message
                     notify(e)
                 }      
@@ -73,7 +80,7 @@ export default function TodoForm() {
                             </FormControl>
                             )}
                         </Field>
-                        <Button colorScheme='teal' type='submit'> Save Todo </Button>
+                        <Button colorScheme='teal' isLoading={isLoading ? isLoading:false} spinner={<BeatLoader size={8} color='white' />} type='submit'> Save Todo </Button>
                     </Form> 
                 )
             } 

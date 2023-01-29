@@ -8,7 +8,8 @@ import { useRouter } from 'next/navigation';
 import BeatLoader from "react-spinners/BeatLoader";
 import Link from 'next/link';
 
-function TodoItem({todo}:any) {
+function TodoItem({todo, getAllTodos}:any) {
+
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const refreshData = () => {
@@ -23,6 +24,7 @@ function TodoItem({todo}:any) {
       try {
         setIsLoading(true);
         const res = await fetch(`/api/todos/${id}`, {method: 'DELETE'})
+        getAllTodos();
         notify('Todo has been deleted');
         setIsLoading(false)
         
@@ -42,11 +44,12 @@ function TodoItem({todo}:any) {
   return (
     <ListItem bg="todo.700" p='12px' borderRadius='8px' color='#fff'>
         <Flex align='center'>
-            <Text textDecoration={isComplete ? '':'line-through'}>{todo.title}</Text>
+            <Text>{todo.title}</Text>
+            {/* <Text textDecoration={isComplete ? '':'line-through'}>{todo.title}</Text> */}
             <Spacer/>
-            <Link href={`/edit/${todo.id}`}><ListIcon color='#fff' as={FiEdit} /></Link> 
+            {/* <Link href={`/edit/${todo.id}`}><ListIcon color='#fff' as={FiEdit} /></Link>  */}
             {isLoading ? <BeatLoader size={8} color="#36d7b7" /> : <ListIcon color='#fff' onClick={()=>handleDelete(todo.id)} as={FiTrash2} />}
-            <ListIcon color='#fff' onClick={handleComplete} as={isComplete ? FiEye : FiEyeOff} />
+            {/* <ListIcon color='#fff' onClick={handleComplete} as={isComplete ? FiEye : FiEyeOff} /> */}
         </Flex>
     </ListItem>
   )
