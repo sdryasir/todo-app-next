@@ -17,7 +17,7 @@ function Todo() {
 
   const [todos, setTodos] = useState([])
   async function getData() {
-    await fetch(process.env.BASE_URL+"/api/todos").then(res=>res.json()).then(data=>setTodos(data.todos))
+    await fetch("/api/todos").then(res=>res.json()).then(data=>setTodos(data.todos))
   }
   useEffect(()=>{
     getData();    

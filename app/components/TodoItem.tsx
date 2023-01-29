@@ -22,7 +22,7 @@ function TodoItem({todo}:any) {
     const handleDelete = async (id:string)=>{
       try {
         setIsLoading(true);
-        const res = await fetch(`${process.env.BASE_URL}/api/todos/${id}`, {method: 'DELETE'})
+        const res = await fetch(`/api/todos/${id}`, {method: 'DELETE'})
         notify('Todo has been deleted');
         setIsLoading(false)
         
@@ -34,7 +34,7 @@ function TodoItem({todo}:any) {
     }
 
     const handleEdit = async (id:string)=>{
-      const resonse = await fetch(`${process.env.BASE_URL}/api/todos/${id}`)
+      const resonse = await fetch(`/api/todos/${id}`)
       return resonse.json();
     }
 
